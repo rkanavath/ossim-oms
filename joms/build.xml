@@ -16,6 +16,7 @@
     <property name="module.name" value="joms" />
     <property name="java.home" value="${env.JAVA_HOME}" />
     <property name="oms.home" value="${OSSIM_DEV_HOME}/ossim-oms" />
+    <property name="oms.dev.home" value="${OSSIM_DEV_HOME}" />
     <property name="ossim.home" value="${OSSIM_DEV_HOME}/ossim" />
 
     <echo message="module.name = ${module.name}" />
@@ -171,7 +172,7 @@
         </copy>
     </target>
     <target name="compile-groovy" depends="add-groovy-task">
-        
+
         <if>
             <isset property="groovy.task"/>
             <then>
@@ -221,7 +222,7 @@
                     -->
                     <includepath>
                         <path location="swig" />
-                        <path location="${jdk.home}/include" />                        
+                        <path location="${jdk.home}/include" />
                         <path location="${jdk.home}/include/darwin" />
                         <path location="/Developer/SDKs/MacOSX${mac.sdk_version}.sdk/System/Library/Frameworks/JavaVM.framework/Headers" />
                         <path location="${ossim.install_prefix}/include" />
@@ -275,6 +276,7 @@
                   <path location="${oms.home}/coms/include" />
                   <path location="${ossim.install_prefix}/include" />
                   <path location="${ossim.home}/include" />
+                  <path location="${ossim.dev.home}/ossim-3disa/include" />
                   <path location="${ossim.dependencies}/include" />
                   <path location="${osg.home}/include" />
                 </includepath>
@@ -403,7 +405,7 @@
         <!-- Note: "copy changing library perms to 664. -->
         <copy file="${library.name}" todir="${ossim.install_prefix}/lib${lib_suffix}"/>
         <copy file="../lib/${module.name}-${ossim.version}-${ossim.versionTag}.jar" todir="${ossim.install_prefix}/share/java"/>
-        
+
         <if>
             <equals arg1="${os.name}" arg2="Mac OS X" />
             <then>

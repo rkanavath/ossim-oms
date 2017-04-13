@@ -11,6 +11,6 @@ ELSE(NOT APPLE)
   cmake_minimum_required(VERSION 2.8)
 ENDIF(NOT APPLE)
 
-subdirs(coms)
+add_subdirectory(coms)
 
 OSSIM_ADD_COMMON_MAKE_UNINSTALL()

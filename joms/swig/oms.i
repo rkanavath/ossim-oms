@@ -99,6 +99,7 @@
 #include <oms/Envelope.h>
 #include <oms/TileCacheSupport.h>
 #include <oms/OssimTools.h>
+#include <oms/ThreeDISA.h>
 
 //#include "RasterEngine.h"
 
@@ -148,7 +149,7 @@ static JNIEnv * JNU_GetEnv()
 void * operator new(size_t t)
 {
    //  OpenThreads::ScopedLock<OpenThreads::Mutex> lock(mPrivateMutex);
-   if (cached_jvm != 0) 
+   if (cached_jvm != 0)
    {
       JNIEnv *env = JNU_GetEnv();
       jbyteArray jba = env->NewByteArray(t + sizeof(Jalloc));
@@ -167,7 +168,7 @@ void * operator new(size_t t)
       }
       return static_cast<void *>(static_cast<char *>(jbuffer) + sizeof(Jalloc));
    }
-   else 
+   else
    { /* JNI_OnLoad not called, use malloc and mark as special */
       Jalloc *pJalloc = static_cast<Jalloc *>(malloc(t + sizeof(Jalloc)));
       if (!pJalloc)
@@ -183,13 +184,13 @@ void operator delete(void *v)
    //  OpenThreads::ScopedLock<OpenThreads::Mutex> lock(mPrivateMutex);
    void *buffer = static_cast<void *>( static_cast<char *>(v) - sizeof(Jalloc));
    Jalloc *pJalloc = static_cast<Jalloc *>(buffer);
-   if (pJalloc->ref) 
+   if (pJalloc->ref)
    {
       JNIEnv *env = JNU_GetEnv();
       env->DeleteGlobalRef(pJalloc->ref);
       env->ReleaseByteArrayElements(pJalloc->jba, static_cast<jbyte *>(buffer), 0);
    }
-   else 
+   else
    {
       free(buffer);
    }
@@ -319,7 +320,7 @@ public:
     */
    virtual bool saveState(ossimKeywordlist& kwl,
                           const char* prefix=0) const;
-   
+
    /*!
     * Method to the load (recreate) the state of the object from a keyword
     * list.  Return true if ok or false on error.
@@ -380,13 +381,13 @@ class ossimPropertyInterface
 public:
    virtual void setProperty(const ossimString& name,
                             const ossimString& value);
-   
+
    virtual void setProperty(ossimRefPtr<ossimProperty> property);
    virtual ossimRefPtr<ossimProperty> getProperty(const ossimString& name)const;
    virtual void getPropertyNames(std::vector<ossimString>& propertyNames)const;
    void getPropertyList(std::vector<ossimRefPtr<ossimProperty> >& propertyList)const;
    void setProperties(std::vector<ossimRefPtr<ossimProperty> >& propertyList);
-   
+
 protected:
    ossimPropertyInterface();
 };
@@ -427,7 +428,7 @@ public:
       {
          return (ossim_uint32)theInputObjectList.size();
       }
-   
+
    virtual ossim_uint32 getNumberOfOutputs()const
       {
          return (ossim_uint32)theOutputObjectList.size();
@@ -466,7 +467,7 @@ class ossimSource : public ossimConnectableObject
 {
 public:
    //virtual void initialize();
-   
+
 protected:
     ossimSource();
 };
@@ -522,14 +523,14 @@ public:
               ossim_int32 lr_corner_y,
               ossimCoordSysOrientMode mode=OSSIM_LEFT_HANDED);
    ossimIrect(const ossimDrect& rect);
-   
+
    ossimIpt ul() const;
    ossimIpt ur() const;
    ossimIpt lr() const;
    ossimIpt ll() const;
-   
+
    ossimIrect clipToRect(const ossimIrect& rect)const;
-   
+
    inline ossimIpt midPoint()const;
 
    ossimIrect combine(const ossimIrect& rect)const;
@@ -585,7 +586,7 @@ public:
               const double& lr_corner_x,
               const double& lr_corner_y,
               ossimCoordSysOrientMode mode=OSSIM_LEFT_HANDED);
-   
+
    ossimDpt ul() const;
    ossimDpt ur() const;
    ossimDpt lr() const;
@@ -595,7 +596,7 @@ public:
    ossimDrect clipToRect(const ossimDrect& rect)const;
    ossimDrect combine(const ossimDrect& rect)const;
    inline ossimDpt midPoint()const;
-   
+
 };
 
 %extend ossimDrect
@@ -973,7 +974,7 @@ public:
    void addPreference(const char* key,
                       const char* value);
    ossimFilename getPreferencesFilename() const;
-   
+
 protected:
    ossimPreferences();
 };
@@ -2082,6 +2083,7 @@ namespace std
 %include <oms/MapProjection.h>
 %include <oms/Envelope.h>
 %include <oms/TileCacheSupport.h>
+%include <oms/ThreeDISA.h>
 
 //---
 // Begin std::map
@@ -2094,15 +2096,16 @@ namespace std
   static $javaclassname convertMap(java.util.Map<String,String> in) {
     $javaclassname out = new $javaclassname();
     for (java.util.Map.Entry<String, String> entry : in.entrySet()) {
-      out.set(entry.getKey(), entry.getValue());      
+      out.set(entry.getKey(), entry.getValue());
     }
     return out;
-  }    
+  }
 %}
 %template(MapType) std::map<std::string, std::string>;
 // End: std::map
 
 %include <oms/OssimTools.h>
+%include <oms/ThreeDISA.h>
 %include <oms/Chipper.h>
 %include <oms/GpkgWriter.h>
 
@@ -2188,5 +2191,3 @@ public:
 %feature("director", assumeoverride=1) ossim::ossimUtility;
 %feature("director", assumeoverride=1) ossim::ossimChipProcUtil;
 %feature("director", assumeoverride=1) ossim::ossimViewshedUtil;
-
-

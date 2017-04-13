@@ -12,7 +12,7 @@ namespace oms
 class OMSDLL ThreeDISA
 {
 public:
-   ThreeDISA(std::string name);
+   ThreeDISA(const std::string& name);
    ~ThreeDISA();
 
    /**
@@ -66,6 +66,6 @@ private:
    static bool m_locked;
 };
 
-}
+} // end namespace oms
 
 #endif

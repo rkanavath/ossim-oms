@@ -3,57 +3,53 @@
 #include <iostream>
 #include <exception>
 
-using namespace oms;
-using namespace O2;
-using namespace std;
+bool oms::ThreeDISA::m_locked = false;
 
-bool ThreeDISA::m_locked = false;
-
-ThreeDISA::ThreeDISA(string name)
+oms::ThreeDISA::ThreeDISA(const std::string& name)
 {
 }
 
-ThreeDISA::~ThreeDISA()
+oms::ThreeDISA::~ThreeDISA()
 {
 }
 
-void ThreeDISA::sourceSelect(const string& json_query, string& json_response)
+void oms::ThreeDISA::sourceSelect(const std::string& json_query, std::string& json_response)
 {
    try
    {
-      SourceSelection::sourceSelect(json_query, json_response);
+      O2::SourceSelection::sourceSelect(json_query, json_response);
    }
-   catch (exception& e)
+   catch (std::exception& e)
    {
-      cout<<e.what()<<endl;
+      std::cout<<e.what()<<std::endl;
    }
 }
 
-string ThreeDISA::startSession(const string& sessionID)
+std::string oms::ThreeDISA::startSession(const std::string& sessionID)
 {
 
 }
 
 
-string ThreeDISA::endSession(const string& sessionID)
+std::string oms::ThreeDISA::endSession(const std::string& sessionID)
 {
 
 }
 
 
-const vector<string>& ThreeDISA::getActiveSessionIDs()
+const std::vector<std::string>& oms::ThreeDISA::getActiveSessionIDs()
 {
 
 }
 
 
-void ThreeDISA::generateAutoTiePoints(const string& sessionID)
+void oms::ThreeDISA::generateAutoTiePoints(const std::string& sessionID)
 {
 
 }
 
 
-void ThreeDISA::logMessage(const string& sessionID, const string& message)
+void oms::ThreeDISA::logMessage(const std::string& sessionID, const std::string& message)
 {
 
 }

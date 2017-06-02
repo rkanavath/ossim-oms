@@ -2937,6 +2937,17 @@ void oms::DataInfo::getGrazingAngle( const ossimKeywordlist& kwl,
             grazingAngle = kwl.findKey( keys[0].string() );
          }
 
+         // check to see if there were any keys with substring graz
+         if(grazingAngle.empty())
+         {
+            ossimString regExp = "\\..*((GRAZ)|(graz)|(Graz)).*";
+            kwl.findAllKeysThatMatch( keys, regExp );
+
+            if ( keys.size() )
+            {
+               grazingAngle = kwl.findKey( keys[0].string() );
+            }
+         }
 #if 0 /* Removed 11 Sep 2015 (drb) */
          if ( grazingAngle.empty() )
          {
